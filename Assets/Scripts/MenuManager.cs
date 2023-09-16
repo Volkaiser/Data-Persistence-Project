@@ -8,27 +8,35 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI bestScoreText;
-    [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TMP_InputField nameInputField;
 
     void Start()
     {
         string pName = GameManager.Instance.GetBestScorePlayerName();
+        if(string.IsNullOrEmpty(pName) )
+        {
+            pName = "???";
+        }
         int pScore = GameManager.Instance.GetBestScore();
         bestScoreText.text = $"Best Score : {pName} : {pScore}";
     }
 
     public void StartGame()
     {
-        if(nameText.text == null)
+        if(string.IsNullOrWhiteSpace(nameInputField.text))
         {
             GameManager.Instance.SetPlayerName("???");
         }
         else
         {
-            GameManager.Instance.SetPlayerName(nameText.text);
+            GameManager.Instance.SetPlayerName(nameInputField.text);
         }
         SceneManager.LoadScene(1);
+    }
+
+    public void Highscores()
+    {
+        SceneManager.LoadScene(2);
     }
 
     public void EndGame()
